@@ -1,0 +1,346 @@
+body {
+  /* 设最大最小宽度可防止页面变形 */
+  max-width: 540px;
+  min-width: 320px;
+  margin: 0 auto;
+  font: normal 14px/1.5 Tahoma, "Lucida Grande", Verdana, "Microsoft Yahei",
+    STXihei, hei;
+  color: #000;
+  background: #f2f2f2;
+  /* 阻止水平滚动条出现 */
+  overflow-x: hidden;
+  /* 防止（点击元素后）背景高亮 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #222;
+}
+
+div {
+  box-sizing: border-box;
+}
+
+/* 一、顶部搜索 */
+
+.search-index {
+  display: flex;
+  /* 固定定位的盒子特点:
+  1.参考系为屏幕
+  2.定位/浮动后，无法继承父级属性；需要再设置最大最小宽度
+  3.该盒子的margin失效；只能通过left值调整位置
+ */
+  position: fixed;
+  top: 0;
+  left: 50%;
+  /* 是CSS３的属性
+  加前缀，兼容较老版本的浏览器 */
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  /* why设置在父元素，宽度撑满 */
+  width: 100%;
+  min-width: 320px;
+  max-width: 540px;
+  height: 44px;
+  /* background-color: pink; */
+  background-color: #f6f6f6;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.search {
+  position: relative;
+  height: 26px;
+  line-height: 24px;
+  border: 1px solid #ccc;
+  /* 左侧自适应：完全等比宽度 */
+  flex: 1;
+  font-size: 12px;
+  color: #666;
+  margin: 7px 10px;
+  padding-left: 25px;
+  /* 设置圆角 */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 伪元素应用之替代标签：设置放大镜 */
+.search::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  /* 伪元素默认是行内元素 */
+  /* 定位后，行内元素就转化为块级元素 */
+  width: 15px;
+  height: 15px;
+  background: url(../images/sprite.png) no-repeat -59px -279px;
+  /* 2倍精灵图，需要缩放 */
+  /* 使用步骤：1.设计稿缩放至一半；2.查看左上的坐标；3.设置背景图大小为一半 */
+  background-size: 104px auto;
+}
+
+/* 父盒子设置diaplay:flex;行内元素就转化为块级元素，可设置宽高 */
+
+.user {
+  width: 44px;
+  height: 44px;
+  /* background-color: purple; */
+  font-size: 12px;
+  text-align: center;
+  color: #2eaae0;
+}
+
+/* 伪元素应用之替代标签：设置头像*/
+.user::before {
+  content: "";
+  /* 伪元素是行内元素 */
+  display: block;
+  width: 23px;
+  height: 23px;
+  background: url(../images/sprite.png) no-repeat -59px -194px;
+  background-size: 104px auto;
+  margin: 4px auto -2px;
+}
+
+/* 二、焦点图 */
+
+.focus {
+  /* 顶部搜索栏有定位脱离标准流，图片有部分被压盖 */
+  padding-top: 44px;
+}
+
+.focus img {
+  width: 100%;
+}
+
+/* 三、局部导航栏 */
+.local-nav {
+  display: flex;
+  height: 64px;
+  margin: 3px 4px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.local-nav li {
+  flex: 1;
+}
+
+.local-nav a {
+  display: flex;
+  /* 设列为主轴 */
+  flex-direction: column;
+  /* 子元素在侧轴的对齐方式：居中（单行） */
+  align-items: center;
+  font-size: 12px;
+}
+
+/* 属性选择器：基于通配符的概念 */
+/* E[attr^="value"]：指定了属性名，并且有属性值，属性值是以value开头的； */
+.local-nav li [class^="local-nav-icon"] {
+  width: 32px;
+  height: 32px;
+  margin-top: 8px;
+  background: url(../images/localnav_bg.png) no-repeat 0 0;
+  background-size: 32px auto;
+}
+
+.local-nav li .local-nav-icon-icon2 {
+  background-position: 0 -32px;
+}
+
+.local-nav li .local-nav-icon-icon3 {
+  background-position: 0 -64px;
+}
+
+.local-nav li .local-nav-icon-icon4 {
+  background-position: 0 -96px;
+}
+
+.local-nav li .local-nav-icon-icon5 {
+  background-position: 0 -128px;
+}
+
+/* 四、主导航栏 */
+
+/* 清除浮动：解决子元素浮动/定位引起父元素高度塌陷 */
+nav {
+  overflow: hidden;
+  border-radius: 8px;
+  margin: 0 4px 3px;
+}
+/* 布局：3个nav-items盒子按行完全等比宽度，内部a按列完全等比高度，内部只有一个a盒子则占据所有空间 */
+.nav-common {
+  display: flex;
+  height: 88px;
+  /* background-color: pink; */
+}
+
+/* 设置三盒子间的空白：思路是设置第二个nav-common外边距 */
+.nav-common:nth-child(2) {
+  margin: 3px 0;
+}
+
+.nav-items {
+  /* 作为子盒子，如何分配剩余空间呢，完全等比宽度（行为主轴，在父盒子中设置，默认值为行） */
+  flex: 1;
+  /* 作为父盒子，设内部为FLEX布局 */
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-items a {
+  /* 作为子盒子，如何分配剩余空间呢，完全等比高度（列为主轴，在父盒子中设置） */
+  flex: 1;
+  text-align: center;
+  line-height: 44px;
+  color: #fff;
+  font-size: 14px;
+  /* 文字阴影 */
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* 设置下边框：思路是设置所有a盒子，去掉a大盒子 */
+.nav-items a:nth-child(1) {
+  /* 设置所有 */
+  border-bottom: 1px solid #fff;
+}
+
+.nav-items:nth-child(1) a {
+  /* 排除个别 */
+  border: 0;
+  background: url(../images/hotel.png) no-repeat bottom center;
+  background-size: 121px auto;
+}
+
+/* 设置右边框:思路是设置前两个大盒子 */
+
+/* -n+2：选择前两元素 */
+
+.nav-items:nth-child(-n + 2) {
+  border-right: 1px solid #fff;
+}
+
+/* 线性渐变 */
+.nav-common:nth-child(1) {
+  background: -webkit-linear-gradient(left, #fa5a55, #fa994d);
+}
+
+.nav-common:nth-child(2) {
+  background: -webkit-linear-gradient(left, #4b90ed, #53bced);
+}
+
+.nav-common:nth-child(3) {
+  background: -webkit-linear-gradient(left, #34c2a9, #6cd559);
+}
+
+/* 五、subnav-entry */
+
+.subnav-entry {
+  display: flex;
+  border-radius: 8px;
+  background-color: #fff;
+  margin: 0 4px;
+  /* 换行，第一行在上方 */
+  flex-wrap: wrap;
+  padding: 5px 0;
+}
+
+.subnav-entry li {
+  /* 参考系为父元素，完全等比宽度父盒子的20% */
+  flex: 20%;
+}
+
+.subnav-entry a {
+  display: flex;
+  flex-direction: column;
+  /* 设置子元素在侧轴的对齐方式 */
+  align-items: center;
+}
+
+.subnav-entry-icon {
+  width: 28px;
+  height: 28px;
+  /* background-color: pink; */
+  margin-top: 4px;
+  background: url(../images/subnav-bg.png) no-repeat;
+  background-size: 28px auto;
+}
+
+/* 六、sales-box */
+
+.sales-box {
+  border-top: 1px solid #bbb;
+  background-color: #fff;
+  margin: 4px;
+}
+
+.sales-hd {
+  position: relative;
+  height: 44px;
+  border-bottom: 1px solid #ccc;
+}
+
+.sales-hd h2 {
+  position: relative;
+  text-indent: -999px;
+  overflow: hidden;
+}
+
+.sales-hd h2::after {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  content: "";
+  width: 79px;
+  height: 15px;
+  background: url(../images/hot.png) no-repeat 0 -20px;
+  background-size: 79px auto;
+}
+
+.more {
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  background: -webkit-linear-gradient(left, #ff506c, #ff6bc6);
+  border-radius: 15px;
+  padding: 3px 20px 3px 10px;
+  color: #fff;
+}
+
+.more::after {
+  content: "";
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: rotate(45deg);
+}
+
+.row {
+  display: flex;
+}
+
+.row a {
+  flex: 1;
+  border-bottom: 1px solid #eee;
+}
+
+.row a:nth-child(1) {
+  border-right: 1px solid #eee;
+}
+
+.row a img {
+  width: 100%;
+}
